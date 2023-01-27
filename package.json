@@ -1,0 +1,37 @@
+{
+  "name": "ponbook-api",
+  "version": "1.0.0",
+  "description": "Api for PonBook",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "nodemon": "nodemon server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "core-js": "^3.27.2",
+    "cors": "^2.8.5",
+    "dotenv": "^8.6.0",
+    "express": "^4.18.2",
+    "mongodb": "^3.7.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mplp88/PonBookApi.git"
+  },
+  "keywords": [
+    "PonBook",
+    "api",
+    "social",
+    "network"
+  ],
+  "author": "Martín Ponce",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mplp88/PonBookApi/issues"
+  },
+  "homepage": "https://github.com/mplp88/PonBookApi#readme"
+}
