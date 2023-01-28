@@ -3,9 +3,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors')
 const express = require('express')
 const app = express()
-const dal = require('./dal/mongodb')
+const dal = require('../dal/mongodb')
 
-const Account = require('./account/account')
+const Account = require('../account/account')
 
 const port = process.env.PORT
 
