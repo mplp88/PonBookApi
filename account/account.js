@@ -15,11 +15,12 @@ router.post('/login', (req, res) => {
     if (err) return res.status(400).json(err)
     let temp = results.find(u => u.username == username && u.password == password)
     user = temp ? temp : {}
+    delete user.password
     return res.json(user)
   })
 })
 
-router.put('/updateAccountInfo/:id', (req, res) => {
+router.put('/:id/updateAccountInfo', (req, res) => {
   if (dal.hasDbError) res.send('Error in DB.\n' + dal.error);
 
   try {
@@ -58,40 +59,45 @@ router.put('/updateAccountInfo/:id', (req, res) => {
   }
 })
 
-router.put('/changePassword/:id', (req, res) => {
+router.put('/:id/changePassword', (req, res) => {
   if (dal.hasDbError) res.send('Error in DB.\n' + dal.error);
 
   try {
-    let regex = new RegExp(req.params.id)
+    let id = req.params.id;
     let username = req.body.username;
     let oldPassword = req.body.oldPassword;
     let newPassword = req.body.newPassword;
 
-    dal.db.collection('users').find({
-      "_id": regex
+    console.log({
+      id,
+      username,
+      oldPassword,
+      newPassword
+    })
+
+    dal.db.collection('users').findOne({
+      _id: id
     }).toArray((err, results) => {
       if (err) return res.json(err)
-
+      console.log(results);
       let temp = results.find(u => u.username == username && u.password == oldPassword)
-      let user = temp._id ? temp : {}
+      let user = temp && temp._id ? temp : {}
 
       if (!user._id) {
-        return res.json({
-          ok: false,
+        res.status(400).send({
+          ok:false,
           error: new Error('El password anterior es incorrecto')
-        })
+        });
       }
 
       dal.db.collection('users').findOneAndUpdate({
-        'username': regex,
+        _id: id
       }, {
         $set: {
           password: newPassword
         }
-      }, {
-        returnOriginal: false
       }, (err, result) => {
-        if (err) return res.json({
+        if (err) return res.status(400).json({
           ok: false,
           error: err
         })
@@ -103,8 +109,9 @@ router.put('/changePassword/:id', (req, res) => {
       })
     })
   } catch (e) {
-    return res.json({
+    return res.status(400).json({
       ok: false,
+      a: 'Excepcion no controlada',
       error: e
     })
   }
