@@ -1,6 +1,10 @@
 const router = require('express').Router()
 const dal = require('../dal/mongodb')
 
+router.get('/', (req, res) => {
+  res.send('Account Endpoint')
+})
+
 router.post('/login', (req, res) => {
   if (dal.hasDbError) res.send('Error in DB.\n' + dal.error);
 
@@ -85,7 +89,7 @@ router.put('/:id/changePassword', (req, res) => {
 
       if (!user._id) {
         res.status(400).send({
-          ok:false,
+          ok: false,
           error: new Error('El password anterior es incorrecto')
         });
       }
